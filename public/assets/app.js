@@ -184,18 +184,25 @@
       }
     });
 
+    // Hinweis oben ausblenden, sobald kein Feld mehr als fehlerhaft markiert ist
+    function hinweisPruefen() {
+      if (hinweis && !form.querySelector('[aria-invalid="true"]')) { hinweis.hidden = true; }
+    }
+
     // Fehler am Feld verschwinden, sobald es korrigiert wird
     form.addEventListener('input', function (ev) {
       var t = ev.target;
       if (t.getAttribute('aria-invalid') === 'true' && t.value.trim() !== '') {
         var feld = t.closest('[data-person]') || t.closest('.feld');
         if (feld) { fehlerSetzen(feld, t, ''); }
+        hinweisPruefen();
       }
     });
     form.addEventListener('change', function (ev) {
       if (ev.target.name === 'art') {
         var gruppe = form.querySelector('#art');
         fehlerSetzen(gruppe, gruppe, '');
+        hinweisPruefen();
       }
     });
   }
