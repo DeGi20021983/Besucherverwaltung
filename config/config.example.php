@@ -37,12 +37,13 @@ return [
     ],
 
     'datenschutz' => [
-        // Löschung: Stunden nach dem angekündigten Besuchszeitpunkt (Tag + Uhrzeit)
+        // Löschung: Stunden nach Beginn des Besuchstags (00:00), Standard 24 =
+        // in der Nacht nach dem Besuch
         'aufbewahrung_stunden' => 24,
         // Hinweistext unter dem Formular
         'hinweis' => 'Die hier eingegebenen personenbezogenen Daten werden ausschließlich '
-            . 'zur Anmeldung des Besuchs beim Pfortendienst verwendet und 24 Stunden nach '
-            . 'dem angekündigten Besuchszeitpunkt automatisch gelöscht.',
+            . 'zur Anmeldung des Besuchs beim Pfortendienst verwendet und am Ende des '
+            . 'Besuchstags automatisch gelöscht.',
     ],
 
     'rate_limit' => [
