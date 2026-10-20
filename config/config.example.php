@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 return [
     'app' => [
-        // Name in Titelzeile und E-Mails
+        // Name in der Titelzeile
         'name'     => 'Besuchermanagement',
         'zeitzone' => 'Europe/Berlin',
         // true nur zur Fehlersuche auf einem Testsystem: zeigt PHP-Fehler im Browser
@@ -29,32 +29,11 @@ return [
         'charset'  => 'utf8mb4',
     ],
 
-    // Pfortenansicht (pforte.php) und Excel-Export (export.php) nur von diesen
+    // Pfortenansicht (pforte.php) inkl. Druckliste nur von diesen
     // IP-Adressen bzw. Netzen (CIDR) erreichbar. Leeres Array = keine Einschränkung.
     'pforte_ip_allowlist' => [
         // '10.0.5.21',
         // '10.0.5.0/28',
-    ],
-
-    'mail' => [
-        // 'smtp' (PHPMailer in /lib) oder 'mail' (PHP-Funktion mail() als Fallback)
-        'transport'  => 'smtp',
-        'smtp_host'  => 'smtp.example.local',
-        'smtp_port'  => 587,
-        // 'tls' (STARTTLS), 'ssl' (SMTPS) oder '' (unverschlüsselt)
-        'smtp_secure' => 'tls',
-        'smtp_user'  => '',
-        'smtp_password' => '',
-        'absender'      => 'besuchermanagement@example.local',
-        'absender_name' => 'Besuchermanagement',
-        // Empfänger der Pforte (eine oder mehrere Adressen)
-        'pforte_empfaenger' => [
-            'pforte@example.local',
-        ],
-        // Uhrzeit (HH:MM) für den Versand der Tagesliste per Cron
-        'tagesliste_uhrzeit' => '06:30',
-        // Sofort-Mail an die Pforte bei Ankündigungen für den laufenden Tag
-        'sofort_benachrichtigung' => true,
     ],
 
     'datenschutz' => [

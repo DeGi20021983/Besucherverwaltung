@@ -1,30 +1,31 @@
 # Besuchermanagement
 
 Schlanke Web-Anwendung für ein Behördenhaus: Beschäftigte kündigen externe
-Besucher an, der Pfortendienst erhält pro Tag eine druckbare Excel-Liste.
+Besucher an, der Pfortendienst erhält pro Tag eine druckbare Besucherliste.
+E-Mail-Benachrichtigungen gibt es bewusst nicht.
 Reines PHP ohne Framework und ohne Composer.
 
 > Stand: **Schritt 1 von 6** (Ordnerstruktur, Konfiguration, Datenbankschema,
-> Datenbankverbindung). Formular, Pfortenansicht, Export, E-Mail und Cron
-> folgen in den nächsten Schritten; die vollständige Installationsanleitung
+> Datenbankverbindung). Formular, Pfortenansicht mit Druckliste und
+> Lösch-Cron folgen in den nächsten Schritten; die vollständige Installationsanleitung
 > und Testliste kommen in Schritt 6.
 
 ## Voraussetzungen
 
-- PHP 8.5 mit den Erweiterungen `pdo_mysql`, `zip`, `mbstring`
+- PHP 8.5 mit den Erweiterungen `pdo_mysql`, `mbstring`
 - MariaDB 11.8 LTS
 - Apache 2.4 mit `mod_rewrite` und `AllowOverride All` (für `.htaccess`)
 
 ## Ordnerstruktur
 
 ```
-public/        Web-Root (DocumentRoot): index.php, pforte.php, export.php, assets/
+public/        Web-Root (DocumentRoot): index.php, pforte.php, assets/
   assets/bootstrap/  Bootstrap 5.3.8, lokal eingebunden (kein CDN)
 src/           PHP-Klassen (Namespace Besuchermanagement) und bootstrap.php
-lib/           manuell eingebundene Bibliotheken (z. B. PHPMailer, ohne Composer)
+lib/           manuell eingebundene Bibliotheken (ohne Composer, derzeit leer)
 config/        config.php (nicht im Git) und config.example.php
 sql/           schema.sql
-cron/          Cron-Skripte (Tagesliste, Löschung)
+cron/          Cron-Skript für die Löschung nach 24 Stunden
 storage/logs/  Log-Datei ohne personenbezogene Daten
 ```
 

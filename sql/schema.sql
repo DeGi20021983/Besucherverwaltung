@@ -15,6 +15,7 @@ SET NAMES utf8mb4;
 CREATE TABLE IF NOT EXISTS ankuendigung (
     id                INT UNSIGNED NOT NULL AUTO_INCREMENT,
     besuchstag        DATE         NOT NULL,
+    -- Uhrzeit = Zeitpunkt des Absendens (wird vom System gesetzt, kein Formularfeld)
     uhrzeit           TIME         NOT NULL,
     betreff           VARCHAR(200) NOT NULL,
     ansprech_vorname  VARCHAR(100) NOT NULL,
