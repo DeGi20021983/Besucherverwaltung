@@ -1,0 +1,2 @@
+# Kein Zugriff per Web, falls das Verzeichnis versehentlich erreichbar ist
+Require all denied

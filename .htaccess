@@ -1,0 +1,5 @@
+# Schutz für den Fall, dass statt /public das Projektverzeichnis als
+# DocumentRoot eingetragen wurde: alles außer /public sperren.
+Options -Indexes
+RewriteEngine On
+RewriteRule ^(?!public/) - [F,L]
