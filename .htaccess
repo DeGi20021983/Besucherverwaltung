@@ -1,0 +1,17 @@
+# Fallback, falls der DocumentRoot nicht auf public/ gesetzt werden kann
+# (z. B. Webspace, bei dem das ganze Repository im Web-Verzeichnis liegt).
+# Alle Anfragen werden nach public/ umgeleitet; config/, app/, cleanup.php,
+# schema.sql usw. sind dadurch nicht erreichbar.
+# Empfohlen bleibt: DocumentRoot direkt auf public/ setzen.
+
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^public/ - [L]
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    Require all denied
+</IfModule>
