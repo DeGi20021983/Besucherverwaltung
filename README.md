@@ -22,6 +22,16 @@ Nach dem Absenden erhalten Beschäftigte zusätzlich einen persönlichen
 Bearbeitungslink (`/bearbeiten.php?token=…`), mit dem sie die Anmeldung ändern
 oder absagen können.
 
+## Ansichten
+
+Screenshots aller Seiten liegen in [`docs/screenshots/`](docs/screenshots/), die Druckansicht der
+Tagesliste als PDF in [`docs/screenshots/10-pforte-druck-A4-quer.pdf`](docs/screenshots/10-pforte-druck-A4-quer.pdf).
+Die ursprüngliche Anforderung steht in [`docs/vibe-coding-prompt.md`](docs/vibe-coding-prompt.md).
+
+| Formular | Tagesliste der Pforte |
+|---|---|
+| ![Anmeldeformular](docs/screenshots/03-formular-ausgefuellt.png) | ![Tagesliste](docs/screenshots/08-pforte-tagesliste.png) |
+
 ## Ordnerstruktur
 
 ```
@@ -42,6 +52,7 @@ besucherverwaltung/
 │   ├── config.example.php   Vorlage für die Konfiguration
 │   └── config.php           eigene Konfiguration (nicht im Repository)
 ├── deploy/nginx.conf.example  Beispielkonfiguration für nginx
+├── docs/                    Screenshots und ursprüngliche Anforderung
 ├── cleanup.php              Bereinigung für den Cronjob
 ├── schema.sql               Datenbankschema
 └── .htaccess                Fallback, falls der DocumentRoot nicht auf public/ zeigen kann
