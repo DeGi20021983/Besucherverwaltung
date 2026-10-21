@@ -1,0 +1,89 @@
+/* Druck der Tagesliste: A4 Querformat, nur Überschrift, Datum und Tabelle. */
+
+@page {
+  size: A4 landscape;
+  margin: 12mm;
+}
+
+html, body {
+  background: #fff !important;
+  color: #000 !important;
+  font-size: 11pt;
+}
+
+.kopf,
+button,
+.btn, .btn2, .btnd, .btnr, .ibtn,
+.besuch-karten,
+.liste-anzahl,
+.leer svg,
+.leer .text-grau {
+  display: none !important;
+}
+
+.seite, .seite.breit {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.liste-kopf {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 0 0 5mm;
+}
+.titel { font-size: 22pt; margin: 0; letter-spacing: -0.01em; }
+.liste-datum { font-size: 14pt; color: #000; font-weight: 500; }
+
+.karte, .tabelle-karte {
+  display: block !important;
+  background: none;
+  border-radius: 0;
+  padding: 0;
+  overflow: visible;
+}
+.tabelle-scroll { overflow: visible; }
+
+.liste {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+/* Tabellenkopf auf jeder Seite wiederholen */
+.liste thead { display: table-header-group; }
+.liste tr { break-inside: avoid; page-break-inside: avoid; }
+
+.liste th {
+  padding: 2mm 2.5mm;
+  font-size: 10pt;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  color: #000;
+  background: none;
+  border-bottom: 2px solid #000;
+  white-space: normal;
+}
+.liste td {
+  padding: 2mm 2.5mm;
+  font-size: 11pt;
+  line-height: 1.25;
+  color: #000;
+}
+.liste tr.neu td { border-top: 1px solid #6B6B6B; }
+.liste tr.folge td { border-top: 1px solid #C8C8C8; }
+.liste .zeit { font-weight: 700; }
+.liste .name { font-weight: 600; }
+
+/* Spaltenbreiten wie in der Druckvorlage */
+.liste th:nth-child(1) { width: 25%; }
+.liste th:nth-child(2) { width: 9.5%; }
+.liste th:nth-child(3) { width: 7.5%; }
+.liste th:nth-child(4) { width: 18%; }
+.liste th:nth-child(5) { width: 24%; }
+.liste th:nth-child(6) { width: 16%; }
+
+.leer { padding: 0; text-align: left; align-items: flex-start; }
+.leer h2 { font-size: 14pt; }

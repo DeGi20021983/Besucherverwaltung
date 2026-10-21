@@ -1,0 +1,58 @@
+# Beispielkonfiguration für nginx + PHP-FPM
+# Pfade, Servernamen, Zertifikate und den PHP-FPM-Socket anpassen.
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name besuch.example.de;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name besuch.example.de;
+
+    ssl_certificate     /etc/letsencrypt/live/besuch.example.de/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/besuch.example.de/privkey.pem;
+
+    # Nur das Verzeichnis public/ ist öffentlich erreichbar.
+    root /var/www/besucherverwaltung/public;
+    index index.php;
+
+    # Keine Zugriffsprotokolle: Sie enthielten IP-Adressen und die Tokens
+    # aus den URLs (Bearbeitungslink, Pforten-Link).
+    access_log off;
+
+    server_tokens off;
+    client_max_body_size 1m;
+
+    # Versteckte Dateien sperren
+    location ~ /\. {
+        deny all;
+    }
+
+    # Statische Dateien (CSS/JS) mit Sicherheits-Headern.
+    # Die PHP-Seiten setzen ihre Sicherheits-Header selbst.
+    location / {
+        try_files $uri $uri/ =404;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-Frame-Options "DENY" always;
+        add_header Referrer-Policy "no-referrer" always;
+        add_header Content-Security-Policy "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'" always;
+        add_header Strict-Transport-Security "max-age=31536000" always;
+    }
+
+    location ~ ^/(index|bestaetigung|bearbeiten|pforte)\.php$ {
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param HTTPS on;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+    }
+
+    # Alle anderen PHP-Dateien nicht ausführen
+    location ~ \.php$ {
+        return 404;
+    }
+}
