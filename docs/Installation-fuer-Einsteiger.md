@@ -20,7 +20,108 @@ Diese Anleitung erklärt Schritt für Schritt, wie die Besucheranmeldung ins Int
 | **HTTPS / SSL-Zertifikat** | Sorgt für eine verschlüsselte Verbindung (Schloss-Symbol im Browser). Für diese Anwendung **Pflicht**. Ein kostenloses Zertifikat („Let's Encrypt“) lässt sich im Kundenmenü meist per Klick aktivieren. |
 | **Token** | Eine lange, zufällige Zeichenfolge, die wie ein Passwort wirkt. Wer den Link mit dem Token kennt, darf die Seite sehen. |
 | **Cronjob** | Ein automatischer Auftrag, den der Server regelmäßig ausführt, z. B. „jede Stunde alte Daten löschen“. |
+| **XAMPP** | Ein kostenloses Komplettpaket (Webserver, Datenbank, PHP), mit dem man die Anwendung auf dem eigenen PC ausprobieren kann. Nur für Tests, nicht für den echten Betrieb. |
+| **localhost** | Die Adresse „dieser Rechner selbst“. Was unter `http://localhost` läuft, ist nur auf dem eigenen PC sichtbar. |
 | **Webroot / Zielverzeichnis** | Der Ordner auf dem Webspace, den Besucher der Domain sehen dürfen. Alles außerhalb davon bleibt verborgen. |
+
+---
+
+## Vorab (optional): Kostenlos auf dem eigenen Rechner ausprobieren mit XAMPP
+
+Bevor Sie Hosting buchen, können Sie die Anwendung **kostenlos auf Ihrem eigenen Windows-PC** ausprobieren. Dafür gibt es **XAMPP**: ein Gratis-Paket, das Webserver (Apache), Datenbank (MariaDB), PHP und phpMyAdmin mit einem Klick installiert.
+
+> **Wichtig:** Eine XAMPP-Installation ist **nur auf diesem einen Rechner** erreichbar (Adresse `http://localhost`). Kolleginnen, Kollegen und die Pforte können sie nicht aufrufen, und es gibt kein HTTPS. XAMPP eignet sich also nur zum **Ausprobieren**. Für den echten Betrieb brauchen Sie Hosting mit HTTPS (ab [Schritt 1](#schritt-1-passendes-hosting-besorgen)).
+
+**Passt die Version?** Die Anwendung braucht **PHP 8.2 oder neuer**. Bei XAMPP steht die PHP-Version direkt im Namen des Downloads, z. B. „XAMPP 8.2.12“ = PHP 8.2.12. Nehmen Sie also eine Version **ab 8.2**. Die enthaltene Datenbank (MariaDB 10.4 oder neuer) ist für den Test geeignet. Ältere Pakete (8.1, 8.0, 7.x) funktionieren **nicht**.
+
+### X1: XAMPP installieren
+
+1. Laden Sie XAMPP für Windows von der offiziellen Seite <https://www.apachefriends.org/de/> herunter (Version ab 8.2, siehe oben).
+2. Starten Sie das Installationsprogramm. Eine Warnung zur Benutzerkontensteuerung können Sie mit „OK“ bestätigen.
+3. Bei der Auswahl der Komponenten genügen **Apache**, **MySQL**, **PHP** und **phpMyAdmin**.
+4. Installationsordner: **`C:\xampp`** (Vorschlag übernehmen).
+5. Fragt die Windows-Firewall nach, erlauben Sie den Zugriff nur für **private Netzwerke**.
+
+### X2: Projektdateien ablegen
+
+1. Laden Sie den Code wie in [Schritt 2](#schritt-2-dateien-von-github-herunterladen) beschrieben als ZIP herunter und entpacken Sie ihn.
+2. Benennen Sie den entpackten Ordner in **`besucheranmeldung`** um und verschieben Sie ihn nach **`C:\xampp\`**.
+   Danach muss es den Ordner **`C:\xampp\besucheranmeldung\public`** geben.
+
+> Legen Sie die Dateien **nicht** in den Ordner `C:\xampp\htdocs`. Sonst wären auch `config` und `src` über den Browser abrufbar.
+
+### X3: Apache auf den Ordner `public` einstellen
+
+Damit wie beim echten Betrieb nur der Ordner `public` sichtbar ist, ändern Sie einmalig zwei Zeilen:
+
+1. Öffnen Sie das **XAMPP Control Panel** (Startmenü → „XAMPP Control Panel“).
+2. Klicken Sie in der Zeile **Apache** auf **„Config“** → **„Apache (httpd.conf)“**. Die Datei öffnet sich im Editor.
+3. Suchen Sie mit **Strg + F** nach `htdocs`. Sie finden diese beiden Zeilen:
+
+   ```
+   DocumentRoot "C:/xampp/htdocs"
+   <Directory "C:/xampp/htdocs">
+   ```
+
+4. Ändern Sie **beide** Zeilen so (Schrägstriche `/` wie abgebildet):
+
+   ```
+   DocumentRoot "C:/xampp/besucheranmeldung/public"
+   <Directory "C:/xampp/besucheranmeldung/public">
+   ```
+
+5. Speichern Sie die Datei (Strg + S).
+
+Die XAMPP-Startseite erscheint danach nicht mehr. phpMyAdmin bleibt unter `http://localhost/phpmyadmin` erreichbar. Zum Rückgängigmachen tragen Sie wieder `C:/xampp/htdocs` ein.
+
+### X4: Apache und Datenbank starten
+
+1. Klicken Sie im XAMPP Control Panel bei **Apache** und bei **MySQL** jeweils auf **„Start“**.
+2. Beide Namen werden **grün** hinterlegt.
+
+Bleibt Apache rot, belegt meist ein anderes Programm (z. B. Skype oder IIS) den Anschluss. Beenden Sie dieses Programm und starten Sie Apache erneut.
+
+### X5: Datenbank einrichten
+
+1. Öffnen Sie im Browser **<http://localhost/phpmyadmin>**.
+2. Klicken Sie links auf **„Neu“**.
+3. Datenbankname: **`besucheranmeldung`**, Kollation: **`utf8mb4_unicode_ci`** → **„Anlegen“**.
+4. Mit der neuen Datenbank ausgewählt: oben **„Importieren“** → Datei **`C:\xampp\besucheranmeldung\sql\schema.sql`** wählen → unten **„Importieren“**.
+5. Links erscheinen die drei Tabellen `anmeldungen`, `besucher` und `rate_limit`.
+
+### X6: Konfigurationsdatei ausfüllen
+
+Gehen Sie vor wie in [Schritt 5](#schritt-5-konfigurationsdatei-ausfüllen) (also `config\config.example.php` kopieren und die Kopie in `config.php` umbenennen). Für XAMPP tragen Sie diese Werte ein:
+
+```php
+'db' => [
+    'host'     => 'localhost',
+    'port'     => 3306,
+    'name'     => 'besucheranmeldung',
+    'user'     => 'root',
+    'password' => '',
+    'socket'   => '',
+],
+'pforte_key' => 'HIER-IHR-TOKEN-MIT-MINDESTENS-40-ZEICHEN',
+'ip_hash_secret' => 'HIER-EIN-ZWEITER-ZUFALLSWERT',
+'base_url' => 'http://localhost',
+```
+
+- Bei XAMPP heißt der Datenbank-Benutzer **`root`** und hat **kein Passwort** (zwei Hochkommas ohne Inhalt: `''`). Das ist nur für einen Test auf dem eigenen Rechner in Ordnung, **niemals** auf einem echten Server.
+- Die beiden Token erzeugen Sie wie in [Schritt 4](#schritt-4-zwei-geheime-zeichenfolgen-token-erzeugen) beschrieben.
+
+### X7: Ausprobieren
+
+| Was? | Adresse im Browser |
+|---|---|
+| Anmeldeformular | <http://localhost/> |
+| Tagesliste Pforte | `http://localhost/pforte.php?key=IHR-PFORTEN-TOKEN` |
+
+Testen Sie wie in [Schritt 10](#schritt-10-testen) beschrieben: Anmeldung für heute anlegen, Tagesliste ansehen und drucken, Pforte ohne Token aufrufen (muss „403 – Zugriff verweigert“ zeigen), Anmeldung über den Bearbeitungslink ändern und absagen.
+
+Wenn Sie fertig sind, klicken Sie im XAMPP Control Panel bei Apache und MySQL auf **„Stop“**. Testdaten werden 48 Stunden nach dem eingetragenen Termin automatisch gelöscht.
+
+> **Gut zu wissen:** Lokal über `http://localhost` funktioniert die Anwendung ohne HTTPS. Unter jeder anderen Adresse leitet sie automatisch auf HTTPS um. Auf dem echten Server muss HTTPS deshalb eingerichtet sein ([Schritt 7](#schritt-7-https-einschalten)).
 
 ---
 
@@ -217,6 +318,8 @@ Gerät der Pforten-Link in falsche Hände, tragen Sie in `config/config.php` ein
 | „Technischer Fehler“ | Meist sind die Datenbank-Zugangsdaten falsch, oder die Tabellen fehlen. | Angaben in `config.php` mit dem Kundenmenü vergleichen; in phpMyAdmin prüfen, ob die drei Tabellen vorhanden sind (Schritt 3). |
 | „Forbidden“ / „403“ auf **allen** Seiten | Das Zielverzeichnis zeigt nicht auf `public`. | Schritt 6, Punkt 4 prüfen. |
 | „403 – Zugriff verweigert“ nur bei der **Pforte** | Der Token im Link stimmt nicht mit `pforte_key` überein oder ist kürzer als 32 Zeichen. | Token in `config.php` und im Link vergleichen (Groß-/Kleinschreibung beachten). |
+| **XAMPP:** „Diese Website ist nicht erreichbar“ | Apache läuft nicht. | Im XAMPP Control Panel Apache starten (muss grün sein), siehe X4. |
+| **XAMPP:** „Object not found“ / „403“ | Die Pfade in `httpd.conf` stimmen nicht, oder der Ordner liegt woanders. | X2 und X3 prüfen: Gibt es `C:\xampp\besucheranmeldung\public`? Danach Apache neu starten. |
 | Eine Liste von Dateien oder Programmcode wird angezeigt | Die Domain zeigt auf den falschen Ordner, oder PHP ist nicht aktiv. | Zielverzeichnis prüfen; im Kundenmenü PHP 8.2 oder neuer einstellen. |
 | Seite lädt ohne Farben/Layout | Der Ordner `public/assets` wurde nicht vollständig hochgeladen. | Ordner erneut hochladen. |
 | Der Bearbeitungslink beginnt mit `https://besuch.example.de` | `base_url` wurde nicht angepasst. | In `config.php` Ihre eigene Adresse eintragen (Schritt 5). |
