@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Besucheranmeldung – Demo</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/demo.css">
+    <link rel="stylesheet" href="assets/css/print.css" media="print">
+</head>
+<body>
+    <div class="demo-leiste keine-druckausgabe" role="note">
+        <div class="container demo-leiste-inhalt">
+            <span><strong>Demo:</strong> Daten bleiben nur in diesem Browser. Es gibt keinen Server, nichts wird versendet.</span>
+            <button type="button" class="demo-zuruecksetzen" id="demo-zuruecksetzen">Demo-Daten zurücksetzen</button>
+        </div>
+    </div>
+    <header class="kopf">
+        <div class="container kopf-inhalt">
+            <span class="logo" aria-hidden="true"></span>
+            <span class="app-name">Besucheranmeldung</span>
+            <nav class="demo-nav keine-druckausgabe" aria-label="Demo-Ansichten">
+                <a href="#/" data-ansicht="anmelden">Beschäftigte</a>
+                <a href="#/pforte" data-ansicht="pforte">Pforte</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container" id="inhalt">
+        <noscript><div class="meldung meldung-fehler">Diese Demo benötigt JavaScript. Die echte Anwendung funktioniert auch ohne.</div></noscript>
+    </main>
+    <script src="assets/js/demo.js"></script>
+</body>
+</html>

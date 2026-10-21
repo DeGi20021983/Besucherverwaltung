@@ -1,0 +1,90 @@
+/*
+ * Druck-Stylesheet (Tagesliste Pforte): A4 Querformat, nur Überschrift mit Datum und Tabelle,
+ * keine Buttons/Navigation, Tabellenkopf wiederholt sich auf jeder Folgeseite.
+ */
+
+@page {
+    size: A4 landscape;
+    margin: 12mm 10mm;
+}
+
+html,
+body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 10pt;
+}
+
+.kopf,
+.keine-druckausgabe,
+.button,
+script {
+    display: none !important;
+}
+
+.container,
+.seite-pforte .container {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+}
+
+main {
+    padding: 0;
+}
+
+.pforte-kopf {
+    display: block;
+    margin: 0 0 4mm;
+}
+
+h1 {
+    font-size: 15pt;
+    margin: 0 0 1mm;
+}
+
+.stand {
+    font-size: 9pt;
+    color: #333 !important;
+}
+
+.meldung {
+    border: 1px solid #000;
+    background: none !important;
+    color: #000 !important;
+}
+
+.tabelle-wrapper {
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+    background: none;
+}
+
+.tagesliste {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+}
+
+.tagesliste thead {
+    display: table-header-group; /* Kopfzeile auf jeder Seite wiederholen */
+}
+
+.tagesliste tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+.tagesliste th,
+.tagesliste td {
+    border: 0.5pt solid #555;
+    padding: 1.5mm 2mm;
+    background: none !important;
+}
+
+.tagesliste thead th {
+    background: #e6e6e6 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}

@@ -6,6 +6,12 @@ Schlanke Web-Anwendung zur Anmeldung externer Besucherinnen und Besucher – rei
 - **Pfortendienst** sieht über einen geheimen Link eine druckbare Tagesliste (A4 quer) aller Besuche des heutigen Tages.
 - Alle Besucherdaten und Rate-Limit-Daten werden **48 Stunden nach dem Besuchstermin automatisch gelöscht**.
 
+## Demo ansehen (ohne Installation)
+
+**Klickbare Demo:** https://degi20021983.github.io/Besucherverwaltung/
+
+Die Demo zeigt Design und Funktion mit Beispieldaten – Anmeldeformular, Bestätigung mit Bearbeitungslink, Ändern/Absagen und die druckbare Tagesliste der Pforte. Sie läuft komplett im Browser (der Webserver wird per JavaScript nachgebildet), die Daten bleiben nur im eigenen Browser. Die Dateien liegen in `docs/` (`index.html`, `assets/`), die echte PHP-Anwendung ist davon unberührt.
+
 ## Ordnerstruktur
 
 ```
