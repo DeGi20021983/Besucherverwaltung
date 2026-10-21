@@ -124,6 +124,8 @@ php -S localhost:8080 -t public
 
 Dann <http://localhost:8080/> (Formular) bzw. `http://localhost:8080/pforte.php?key=<pforte_key>` öffnen. Der eingebaute PHP-Server ist nur zum Testen gedacht, nicht für den Betrieb.
 
+Unter Windows geht der lokale Test am einfachsten mit **XAMPP** (ab Version 8.2), siehe [Installation für Einsteiger → XAMPP](docs/Installation-fuer-Einsteiger.md#vorab-optional-kostenlos-auf-dem-eigenen-rechner-ausprobieren-mit-xampp). Über `http://localhost` bzw. `127.0.0.1` verzichtet `public/.htaccess` auf die HTTPS-Weiterleitung.
+
 ## Sicherheit und Datenschutz
 
 - PDO mit Prepared Statements für alle Datenbankzugriffe, echte Prepared Statements (`ATTR_EMULATE_PREPARES = false`).
