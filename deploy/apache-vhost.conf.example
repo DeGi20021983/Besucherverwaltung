@@ -1,0 +1,39 @@
+# Beispiel-VirtualHost für Apache 2.4 + PHP-FPM (oder mod_php)
+# Die eigentlichen Regeln stehen in public/.htaccess (AllowOverride All erforderlich).
+
+<VirtualHost *:80>
+    ServerName besuch.example.de
+    Redirect permanent / https://besuch.example.de/
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName besuch.example.de
+
+    # Nur das Verzeichnis public/ ist öffentlich erreichbar.
+    DocumentRoot /var/www/besucheranmeldung/public
+
+    <Directory /var/www/besucheranmeldung>
+        Require all denied
+        AllowOverride None
+    </Directory>
+    <Directory /var/www/besucheranmeldung/public>
+        Require all granted
+        AllowOverride All
+    </Directory>
+
+    # PHP-FPM (bei mod_php entfällt dieser Block)
+    <FilesMatch "\.php$">
+        SetHandler "proxy:unix:/run/php/php8.4-fpm.sock|fcgi://localhost"
+    </FilesMatch>
+
+    SSLEngine on
+    SSLCertificateFile    /etc/letsencrypt/live/besuch.example.de/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/besuch.example.de/privkey.pem
+
+    ServerSignature Off
+
+    # Keine Zugriffs-Logs mit IP-Adressen und Token-URLs (Datenschutz).
+    # Falls Logs nötig sind: CustomLog ohne %h und ohne Query-String (%U statt %r) verwenden.
+    # CustomLog ${APACHE_LOG_DIR}/besuch_access.log "%t \"%m %U %H\" %>s %b"
+    ErrorLog ${APACHE_LOG_DIR}/besuch_error.log
+</VirtualHost>

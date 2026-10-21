@@ -1,0 +1,514 @@
+/* Besucheranmeldung – schlichtes, responsives Layout ohne externe Ressourcen */
+
+:root {
+    --farbe-text: #1d2430;
+    --farbe-text-leise: #5b6577;
+    --farbe-hintergrund: #f4f6f9;
+    --farbe-flaeche: #ffffff;
+    --farbe-rand: #d5dbe4;
+    --farbe-primaer: #1f5fae;
+    --farbe-primaer-dunkel: #174a89;
+    --farbe-fehler: #b3261e;
+    --farbe-fehler-hell: #fdecea;
+    --farbe-erfolg: #1e6b3a;
+    --farbe-erfolg-hell: #e7f5ec;
+    --farbe-info-hell: #e8f0fb;
+    --radius: 8px;
+    --schrift: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: var(--schrift);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--farbe-text);
+    background: var(--farbe-hintergrund);
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.container {
+    width: 100%;
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.seite-pforte .container {
+    max-width: 80rem;
+}
+
+/* ---------- Kopf ---------- */
+
+.kopf {
+    background: var(--farbe-primaer);
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+.kopf-inhalt {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    min-height: 3.5rem;
+}
+
+.logo {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    position: relative;
+}
+
+.logo::after {
+    content: "";
+    position: absolute;
+    inset: 30% 30%;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.app-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+main {
+    padding-bottom: 3rem;
+}
+
+h1 {
+    font-size: 1.6rem;
+    line-height: 1.25;
+    margin: 0 0 .5rem;
+}
+
+h2 {
+    font-size: 1.15rem;
+    margin: 0 0 .5rem;
+}
+
+a {
+    color: var(--farbe-primaer);
+}
+
+.einleitung {
+    color: var(--farbe-text-leise);
+    margin-top: 0;
+}
+
+.hinweis,
+.hinweis-inline {
+    color: var(--farbe-text-leise);
+    font-size: .9rem;
+}
+
+.hinweis-inline {
+    font-weight: 400;
+}
+
+/* ---------- Karten / Fieldsets ---------- */
+
+.karte {
+    background: var(--farbe-flaeche);
+    border: 1px solid var(--farbe-rand);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin: 0 0 1.25rem;
+}
+
+fieldset.karte {
+    min-width: 0;
+}
+
+legend {
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0 .35rem;
+    margin-left: -.35rem;
+}
+
+.raster {
+    display: grid;
+    gap: 1rem;
+}
+
+.raster:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
+.raster > .feld {
+    margin-bottom: 0;
+}
+
+@media (min-width: 40rem) {
+    .raster-2 {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* ---------- Felder ---------- */
+
+.feld {
+    margin-bottom: 1rem;
+}
+
+.feld:last-child {
+    margin-bottom: 0;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: .3rem;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"],
+select {
+    display: block;
+    width: 100%;
+    min-height: 2.75rem;
+    padding: .5rem .7rem;
+    font: inherit;
+    color: inherit;
+    background: #fff;
+    border: 1px solid #9aa5b5;
+    border-radius: 6px;
+}
+
+input:focus,
+select:focus,
+.button:focus {
+    outline: 3px solid rgba(31, 95, 174, .35);
+    outline-offset: 1px;
+    border-color: var(--farbe-primaer);
+}
+
+.hat-fehler input,
+.hat-fehler select {
+    border-color: var(--farbe-fehler);
+    border-width: 2px;
+}
+
+.feld-fehler {
+    color: var(--farbe-fehler);
+    font-size: .9rem;
+    font-weight: 600;
+    margin: .3rem 0 0;
+}
+
+.feld-checkbox label {
+    display: flex;
+    gap: .5rem;
+    align-items: flex-start;
+    font-weight: 400;
+}
+
+.feld-checkbox input {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-top: .15rem;
+    flex: none;
+}
+
+/* Honeypot – für Menschen unsichtbar */
+.hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* Unsichtbarer Standard-Button für die Enter-Taste */
+.standard-button {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* ---------- Personen ---------- */
+
+.personen-liste {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+}
+
+.person-zeile {
+    display: flex;
+    gap: .5rem;
+}
+
+.person-zeile input {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ---------- Buttons ---------- */
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: .5rem 1.1rem;
+    font: inherit;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.button-primaer {
+    background: var(--farbe-primaer);
+    color: #fff;
+}
+
+.button-primaer:hover {
+    background: var(--farbe-primaer-dunkel);
+}
+
+.button-sekundaer {
+    background: #fff;
+    color: var(--farbe-primaer);
+    border-color: var(--farbe-primaer);
+}
+
+.button-sekundaer:hover {
+    background: var(--farbe-info-hell);
+}
+
+.button-entfernen {
+    background: #fff;
+    color: var(--farbe-fehler);
+    border-color: #d9a29e;
+    flex: none;
+}
+
+.button-entfernen:hover {
+    background: var(--farbe-fehler-hell);
+}
+
+.button-gefahr {
+    background: var(--farbe-fehler);
+    color: #fff;
+}
+
+.button-gefahr:hover {
+    background: #8f1e18;
+}
+
+.aktionen {
+    margin: 0 0 2rem;
+}
+
+@media (max-width: 30rem) {
+    .aktionen .button,
+    #person-hinzufuegen {
+        width: 100%;
+    }
+}
+
+/* ---------- Meldungen ---------- */
+
+.meldung {
+    border-radius: var(--radius);
+    padding: .9rem 1.1rem;
+    margin: 0 0 1.25rem;
+    border-left: 5px solid;
+}
+
+.meldung-fehler {
+    background: var(--farbe-fehler-hell);
+    border-color: var(--farbe-fehler);
+    color: #6d1712;
+}
+
+.meldung-erfolg {
+    background: var(--farbe-erfolg-hell);
+    border-color: var(--farbe-erfolg);
+    color: #134226;
+}
+
+.meldung-info {
+    background: var(--farbe-info-hell);
+    border-color: var(--farbe-primaer);
+}
+
+/* ---------- Datenschutz ---------- */
+
+.datenschutz {
+    background: #fafbfc;
+    font-size: .92rem;
+    color: #3a4352;
+}
+
+.datenschutz p:last-child {
+    margin-bottom: 0;
+}
+
+/* ---------- Bestätigung / Zusammenfassung ---------- */
+
+.link-box {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+}
+
+.link-box input {
+    flex: 1 1 18rem;
+    font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+    font-size: .9rem;
+    background: #f7f9fc;
+}
+
+.zusammenfassung {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: .4rem 1rem;
+    margin: 0;
+}
+
+.zusammenfassung dt {
+    font-weight: 600;
+}
+
+.zusammenfassung dd {
+    margin: 0;
+}
+
+.liste-schlicht {
+    margin: 0;
+    padding-left: 1.1rem;
+}
+
+@media (max-width: 30rem) {
+    .zusammenfassung {
+        grid-template-columns: 1fr;
+    }
+    .zusammenfassung dd {
+        margin-bottom: .5rem;
+    }
+}
+
+.absage {
+    border-color: #e3b7b3;
+}
+
+/* ---------- Tagesliste Pforte ---------- */
+
+.pforte-kopf {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.stand {
+    margin: 0;
+    color: var(--farbe-text-leise);
+}
+
+.pforte-aktionen {
+    display: flex;
+    gap: .5rem;
+}
+
+.tabelle-wrapper {
+    background: var(--farbe-flaeche);
+    border: 1px solid var(--farbe-rand);
+    border-radius: var(--radius);
+    overflow-x: auto;
+}
+
+.tagesliste {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tagesliste th,
+.tagesliste td {
+    text-align: left;
+    vertical-align: top;
+    padding: .6rem .8rem;
+    border-bottom: 1px solid var(--farbe-rand);
+}
+
+.tagesliste thead th {
+    background: #eef2f7;
+    font-size: .9rem;
+    white-space: nowrap;
+}
+
+.tagesliste tbody tr:nth-child(even) {
+    background: #f9fafc;
+}
+
+.tagesliste tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.spalte-name {
+    font-weight: 600;
+}
+
+/* Smartphone: Tabelle als Kartenliste */
+@media screen and (max-width: 44rem) {
+    .tabelle-wrapper {
+        background: none;
+        border: 0;
+    }
+    .tagesliste thead {
+        position: absolute;
+        left: -10000px;
+    }
+    .tagesliste,
+    .tagesliste tbody,
+    .tagesliste tr,
+    .tagesliste td {
+        display: block;
+    }
+    .tagesliste tr {
+        background: var(--farbe-flaeche) !important;
+        border: 1px solid var(--farbe-rand);
+        border-radius: var(--radius);
+        margin-bottom: .75rem;
+        padding: .4rem 0;
+    }
+    .tagesliste td {
+        border: 0;
+        padding: .25rem .9rem;
+        display: grid;
+        grid-template-columns: 8.5rem 1fr;
+        gap: .5rem;
+    }
+    .tagesliste td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--farbe-text-leise);
+        font-size: .88rem;
+    }
+}

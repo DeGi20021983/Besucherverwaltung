@@ -1,0 +1,4 @@
+# Echte Konfiguration mit Zugangsdaten und Tokens niemals einchecken
+/config/config.php
+.DS_Store
+*.log

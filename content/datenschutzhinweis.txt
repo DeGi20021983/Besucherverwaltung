@@ -1,0 +1,9 @@
+[PLATZHALTER – bitte durch den abgestimmten Datenschutzhinweis Ihrer Einrichtung ersetzen. Absätze werden durch eine Leerzeile getrennt.]
+
+Mit diesem Formular kündigen Sie externe Besucherinnen und Besucher beim Pfortendienst an. Verarbeitet werden die Angaben zur Einrichtung, der Besuchstermin, der Betreff, der Name der Ansprechperson sowie die Namen der externen Personen. Zweck ist ausschließlich die Organisation des Empfangs und die Zutrittskontrolle am Besuchstag.
+
+Die Daten werden 48 Stunden nach dem Besuchstermin automatisch gelöscht. Eine Absage löscht die Anmeldung sofort.
+
+Zum Schutz vor massenhaftem automatisiertem Absenden wird ein nicht umkehrbarer Hashwert Ihrer IP-Adresse mit Zeitstempel gespeichert und ebenfalls nach 48 Stunden gelöscht. Es werden keine Tracking- oder externen Dienste eingesetzt. Ein technisch notwendiges Sitzungs-Cookie schützt das Formular vor Missbrauch.
+
+Verantwortlich: [Name und Anschrift der Einrichtung]. Datenschutzbeauftragte/r: [Kontakt]. Informationen zu Ihren Rechten (Auskunft, Berichtigung, Löschung, Einschränkung, Widerspruch, Beschwerde bei der Aufsichtsbehörde) finden Sie unter [Link oder Ort].
