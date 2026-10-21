@@ -30,13 +30,14 @@ date_default_timezone_set((string) config('timezone', 'Europe/Berlin'));
 if (PHP_SAPI !== 'cli') {
     set_exception_handler(static function (Throwable $e): void {
         // Nur technische Angaben protokollieren, keine Formularinhalte.
-        error_log(sprintf('[besucheranmeldung] %s in %s:%d', get_class($e), $e->getFile(), $e->getLine()));
+        error_log(sprintf('[besucheranmeldung] %s: %s in %s:%d', get_class($e), $e->getMessage(), $e->getFile(), $e->getLine()));
         if (!headers_sent()) {
             http_response_code(500);
         }
         render('meldung', [
             'titel'   => 'Technischer Fehler',
             'meldung' => 'Leider ist ein technischer Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
+            'details' => diagnoseAnzeigen() ? fehlerDiagnose($e) : null,
         ]);
     });
 

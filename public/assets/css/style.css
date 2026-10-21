@@ -512,3 +512,9 @@ select:focus,
         font-size: .88rem;
     }
 }
+
+/* Diagnose bei technischem Fehler (nur lokal mit debug = true) */
+.diagnose code {
+    overflow-wrap: anywhere;
+    font-size: .9rem;
+}
