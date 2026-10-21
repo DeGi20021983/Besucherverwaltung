@@ -1,0 +1,86 @@
+/* Zusätze nur für die statische Demo (GitHub Pages) */
+
+.demo-leiste {
+    background: #fff4ce;
+    border-bottom: 1px solid #e6cf7a;
+    color: #4d3b00;
+    font-size: .92rem;
+}
+
+.demo-leiste-inhalt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .4rem 1rem;
+    padding-top: .45rem;
+    padding-bottom: .45rem;
+}
+
+.demo-zuruecksetzen {
+    font: inherit;
+    font-weight: 600;
+    color: #4d3b00;
+    background: #fff;
+    border: 1px solid #c9ad4f;
+    border-radius: 6px;
+    padding: .25rem .7rem;
+    cursor: pointer;
+}
+
+.demo-zuruecksetzen:hover {
+    background: #fffbea;
+}
+
+.seite-pforte .demo-leiste .container {
+    max-width: 80rem;
+}
+
+.kopf-inhalt {
+    flex-wrap: wrap;
+}
+
+.demo-nav {
+    margin-left: auto;
+    display: flex;
+    gap: .25rem;
+}
+
+.demo-nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    padding: .4rem .8rem;
+    border-radius: 6px;
+}
+
+.demo-nav a:hover {
+    background: rgba(255, 255, 255, .15);
+}
+
+.demo-nav a[aria-current="page"] {
+    background: #fff;
+    color: var(--farbe-primaer);
+}
+
+.demo-hinweis {
+    border: 1px dashed #c9ad4f;
+    background: #fffbea;
+    border-radius: var(--radius);
+    padding: .75rem 1rem;
+    font-size: .92rem;
+    margin: 0 0 1.25rem;
+}
+
+.demo-hinweis ul {
+    margin: .3rem 0 0;
+    padding-left: 1.2rem;
+}
+
+@media print {
+    .demo-leiste,
+    .demo-nav,
+    .demo-hinweis {
+        display: none !important;
+    }
+}
