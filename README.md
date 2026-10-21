@@ -48,6 +48,8 @@ Schlanke Web-Anwendung zur Anmeldung externer Besucherinnen und Besucher – rei
 
 ## Installation
 
+> **Ohne IT-Vorkenntnisse?** Die ausführliche Schritt-für-Schritt-Anleitung mit Begriffserklärungen steht in [docs/Installation-fuer-Einsteiger.md](docs/Installation-fuer-Einsteiger.md).
+
 1. **Dateien hochladen**, z. B. nach `/var/www/besucheranmeldung`.
    Der Webserver darf **nur** auf `public/` zeigen. `config/`, `src/`, `templates/`, `sql/` usw. liegen außerhalb des Webroots.
 
