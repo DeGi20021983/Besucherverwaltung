@@ -1,0 +1,3 @@
+# Schutz, falls der DocumentRoot versehentlich auf das Projektverzeichnis statt auf public/ zeigt:
+# Konfiguration, Quellcode und SQL-Dateien sind dann trotzdem nicht abrufbar.
+Require all denied
