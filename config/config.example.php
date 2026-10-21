@@ -46,6 +46,11 @@ return [
         'zeitfenster_minuten' => 60,
     ],
 
+    // Fehlersuche: true zeigt bei „Technischer Fehler“ die Ursache und einen Lösungshinweis an –
+    // aber nur, wenn die Seite auf demselben Rechner aufgerufen wird (http://localhost).
+    // Im echten Betrieb immer false lassen.
+    'debug' => false,
+
     // Name, der im Seitenkopf angezeigt wird
     'app_name' => 'Besucheranmeldung',
 ];

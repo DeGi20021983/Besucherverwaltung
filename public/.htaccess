@@ -21,9 +21,10 @@ AddDefaultCharset UTF-8
 <IfModule mod_rewrite.c>
     RewriteEngine On
     # HTTPS erzwingen (hinter einem Reverse-Proxy ggf. anpassen).
-    # Ausnahme: lokaler Test auf dem eigenen Rechner (z. B. mit XAMPP) über http://localhost
+    # Ausnahme: lokaler Test auf dem eigenen Rechner über http://localhost (XAMPP)
+    # oder eine lokale Testadresse wie http://besucheranmeldung.test (Laragon)
     RewriteCond %{HTTPS} !=on
-    RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:[0-9]+)?$ [NC]
+    RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1|[^.]+\.(test|localhost))(:[0-9]+)?$ [NC]
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 </IfModule>
 

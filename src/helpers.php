@@ -114,3 +114,44 @@ function datenschutzAbsaetze(): array
 
     return array_values(array_filter(array_map('trim', $absaetze), 'strlen'));
 }
+
+/**
+ * Fehlerdetails nur anzeigen, wenn 'debug' in config.php eingeschaltet ist
+ * UND die Seite auf demselben Rechner aufgerufen wird (localhost).
+ */
+function diagnoseAnzeigen(): bool
+{
+    return config('debug', false) === true
+        && in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1'], true);
+}
+
+/**
+ * Übersetzt typische Fehler in einen verständlichen Hinweis.
+ *
+ * @return array{fehler:string, hinweis:string}
+ */
+function fehlerDiagnose(Throwable $e): array
+{
+    $text = $e->getMessage();
+    $hinweise = [
+        'could not find driver' => 'Die PHP-Erweiterung „pdo_mysql“ ist nicht aktiviert. Laragon: Rechtsklick ins Laragon-Fenster → PHP → Extensions → „pdo_mysql“ anhaken. XAMPP: in php.ini die Zeile „extension=pdo_mysql“ aktivieren. Danach den Webserver neu starten.',
+        '[1049]' => 'Die Datenbank mit dem in config.php eingetragenen Namen („name“) gibt es nicht. Prüfen Sie die Schreibweise oder legen Sie die Datenbank an (z. B. in HeidiSQL oder phpMyAdmin).',
+        '[1045]' => 'Benutzername oder Passwort der Datenbank sind falsch. Bei Laragon und XAMPP lautet der Benutzer meist „root“ mit leerem Passwort (\'\').',
+        '[2002]' => 'Der Datenbank-Server ist nicht erreichbar. Läuft er? (Laragon: „Alle starten“, XAMPP: MySQL starten.) Tragen Sie als „host“ \'127.0.0.1\' und als „port“ 3306 ein.',
+        '[2006]' => 'Der Datenbank-Server ist nicht erreichbar. Prüfen Sie, ob er läuft und ob „host“ und „port“ in config.php stimmen.',
+        '[1046]' => 'In config.php ist kein Datenbankname („name“) eingetragen.',
+        '[1146]' => 'Die Tabellen fehlen. Importieren Sie sql/schema.sql in die Datenbank aus config.php. Wichtig: vorher links genau diese Datenbank anklicken (sonst erscheint „No database selected“).',
+        '42S02' => 'Die Tabellen fehlen. Importieren Sie sql/schema.sql in die Datenbank aus config.php. Wichtig: vorher links genau diese Datenbank anklicken (sonst erscheint „No database selected“).',
+        '[1044]' => 'Der Datenbank-Benutzer darf auf diese Datenbank nicht zugreifen. Häufigste Ursache: Der Datenbankname („name“) in config.php ist falsch geschrieben oder die Datenbank wurde noch nicht angelegt. Sonst dem Benutzer Rechte geben oder lokal den Benutzer „root“ verwenden.',
+    ];
+    foreach ($hinweise as $muster => $hinweis) {
+        if (stripos($text, $muster) !== false) {
+            return ['fehler' => $text, 'hinweis' => $hinweis];
+        }
+    }
+
+    return [
+        'fehler'  => sprintf('%s: %s (%s, Zeile %d)', get_class($e), $text, basename($e->getFile()), $e->getLine()),
+        'hinweis' => 'Bitte die Fehlermeldung oben prüfen oder an die technische Betreuung weitergeben.',
+    ];
+}

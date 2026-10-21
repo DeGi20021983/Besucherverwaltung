@@ -315,7 +315,7 @@ Gerät der Pforten-Link in falsche Hände, tragen Sie in `config/config.php` ein
 | Was sehen Sie? | Was bedeutet das? | Was tun? |
 |---|---|---|
 | „Die Anwendung ist noch nicht eingerichtet: config/config.php fehlt.“ | Die Datei `config.php` fehlt oder liegt im falschen Ordner. | Schritt 5 prüfen: Die Datei muss `config.php` heißen (nicht `config.php.txt`) und im Ordner `config` liegen. |
-| „Technischer Fehler“ | Meist sind die Datenbank-Zugangsdaten falsch, oder die Tabellen fehlen. | Angaben in `config.php` mit dem Kundenmenü vergleichen; in phpMyAdmin prüfen, ob die drei Tabellen vorhanden sind (Schritt 3). |
+| „Technischer Fehler“ | Meist sind die Datenbank-Zugangsdaten falsch, oder die Tabellen fehlen. | Ursache sichtbar machen wie unten unter [„Technischer Fehler“: Ursache finden](#technischer-fehler-ursache-finden) beschrieben. |
 | „Forbidden“ / „403“ auf **allen** Seiten | Das Zielverzeichnis zeigt nicht auf `public`. | Schritt 6, Punkt 4 prüfen. |
 | „403 – Zugriff verweigert“ nur bei der **Pforte** | Der Token im Link stimmt nicht mit `pforte_key` überein oder ist kürzer als 32 Zeichen. | Token in `config.php` und im Link vergleichen (Groß-/Kleinschreibung beachten). |
 | **XAMPP:** „Diese Website ist nicht erreichbar“ | Apache läuft nicht. | Im XAMPP Control Panel Apache starten (muss grün sein), siehe X4. |
@@ -324,5 +324,46 @@ Gerät der Pforten-Link in falsche Hände, tragen Sie in `config/config.php` ein
 | Seite lädt ohne Farben/Layout | Der Ordner `public/assets` wurde nicht vollständig hochgeladen. | Ordner erneut hochladen. |
 | Der Bearbeitungslink beginnt mit `https://besuch.example.de` | `base_url` wurde nicht angepasst. | In `config.php` Ihre eigene Adresse eintragen (Schritt 5). |
 | Meldung „zu viele Anmeldungen in kurzer Zeit“ | Spamschutz: mehr als 20 Absendungen pro Stunde vom selben Anschluss. | Eine Stunde warten. Der Wert lässt sich in `config.php` unter `rate_limit` erhöhen. |
+
+### „Technischer Fehler“: Ursache finden
+
+Die Seite verrät die genaue Ursache absichtlich nicht, damit Fremde nichts über Ihre Technik erfahren. **Beim lokalen Test** (XAMPP, Laragon) können Sie sie aber sichtbar machen:
+
+1. Öffnen Sie `config/config.php` und tragen Sie vor der Zeile `'app_name' => …` diese Zeile ein (oder ändern Sie `false` in `true`, falls sie schon da ist):
+
+   ```php
+   'debug' => true,
+   ```
+
+2. Speichern und die Seite im Browser neu laden (F5).
+3. Unter „Technischer Fehler“ erscheint jetzt ein Kasten **„Diagnose“** mit der Fehlermeldung und einem **Lösungshinweis**.
+4. Wenn alles läuft: wieder auf `'debug' => false,` stellen.
+
+Der Kasten erscheint nur, wenn die Seite auf demselben Rechner aufgerufen wird. Auf einem echten Server sieht ihn also niemand von außen. Trotzdem gilt: **Im echten Betrieb immer `false`.**
+
+Die häufigsten Ursachen:
+
+| Fehlermeldung enthält … | Ursache | Lösung |
+|---|---|---|
+| `[1049] Unknown database` oder `[1044] Access denied … to database` | Die Datenbank aus `'name'` gibt es nicht, oder der Name ist falsch geschrieben. | Datenbank anlegen bzw. Namen in `config.php` genau so schreiben wie in HeidiSQL/phpMyAdmin. |
+| `[1045] Access denied for user` | Benutzer oder Passwort falsch. | Lokal (Laragon/XAMPP): `'user' => 'root'` und `'password' => ''`. |
+| `[2002]` / `Connection refused` | Datenbank-Server läuft nicht oder Host/Port falsch. | Laragon: „Alle starten“. XAMPP: MySQL starten. In `config.php`: `'host' => '127.0.0.1'`, `'port' => 3306`. |
+| `[1146] Table … doesn't exist` | Die Datenbank ist leer, `schema.sql` wurde nicht (in diese Datenbank) importiert. | `sql/schema.sql` importieren, **vorher links die richtige Datenbank anklicken** (siehe Laragon-Hinweise unten). |
+| `could not find driver` | PHP-Erweiterung `pdo_mysql` fehlt. | Laragon: Rechtsklick ins Laragon-Fenster → PHP → Extensions → `pdo_mysql` anhaken. XAMPP: in `php.ini` `extension=pdo_mysql` aktivieren. Danach Webserver neu starten. |
+
+Ohne den Schalter steht die Ursache außerdem im **PHP-Fehlerprotokoll** (Zeile mit `[besucheranmeldung]`). Wo diese Datei liegt, hängt vom Programm bzw. Hosting ab, beim Hosting meist im Kundenmenü unter „Logs“.
+
+### Hinweise für Laragon
+
+[Laragon](https://laragon.org) ist eine Alternative zu XAMPP. Es funktioniert ähnlich, mit diesen Unterschieden:
+
+- **Ordner:** Projekt nach `C:\laragon\www\besucheranmeldung` legen. Laragon erzeugt automatisch die Adresse `http://besucheranmeldung.test` und nimmt den Unterordner `public` als sichtbaren Ordner. Falls nicht: Rechtsklick ins Laragon-Fenster → „Apache“ → „Neu laden“ bzw. Laragon neu starten.
+- **`base_url`** in `config.php`: `'http://besucheranmeldung.test'`.
+- **Datenbank mit HeidiSQL** (Button „Datenbank“ im Laragon-Fenster):
+  1. Links mit der rechten Maustaste auf die Verbindung („Laragon.MySQL“) → **Neu erstellen → Datenbank**. Name `besucheranmeldung`, Kollation `utf8mb4_unicode_ci` → OK.
+  2. **Die neue Datenbank links anklicken**, sodass sie markiert ist. Das ist wichtig, sonst erscheint beim Import „No database selected“.
+  3. Menü **Datei → SQL-Datei ausführen…** → `sql\schema.sql` wählen.
+  4. Mit **F5** aktualisieren: Unter `besucheranmeldung` stehen jetzt `anmeldungen`, `besucher` und `rate_limit`.
+- **Zugangsdaten:** `'host' => '127.0.0.1'`, `'user' => 'root'`, `'password' => ''`.
 
 Kommen Sie nicht weiter, hilft in der Regel der **Support Ihres Hosting-Anbieters**. Nennen Sie dort: „PHP-Anwendung mit MariaDB-Datenbank, Document Root soll auf den Unterordner `public` zeigen.“
